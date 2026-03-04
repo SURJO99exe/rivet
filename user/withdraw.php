@@ -50,6 +50,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $stmt->execute([$_SESSION['user_id'], $amount, "Withdrawal request via " . $method]);
 
             $pdo->commit();
+
+            // Send Activity Email
+            require_once '../includes/mail_functions.php';
+            require_once '../includes/email_templates.php';
+            $subject = "Withdrawal Request Received - " . SITE_NAME;
+            $message = "Your withdrawal request for <strong>$" . number_format($amount, 2) . "</strong> via <strong>" . htmlspecialchars($method) . "</strong> has been received and is currently under review. We will notify you once it has been processed.";
+            $body = getEmailTemplate("Withdrawal Update", $user['username'], null, $message, true);
+            sendMail($user['email'], $subject, $body);
+
             $success = "Withdrawal request submitted successfully!";
             $user['balance'] -= $amount; // Update local variable for display
         } catch (Exception $e) {

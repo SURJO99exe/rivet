@@ -59,16 +59,31 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_survey'])) {
         if ($completed) {
             $pdo->beginTransaction();
             try {
+                // Record completion
                 $stmt = $pdo->prepare("INSERT INTO survey_completions (user_id, survey_id, reward_earned) VALUES (?, ?, ?)");
                 $stmt->execute([$user_id, $survey_id, $survey['reward']]);
 
+                // Update balance
                 $stmt = $pdo->prepare("UPDATE users SET balance = balance + ?, total_earned = total_earned + ? WHERE id = ?");
                 $stmt->execute([$survey['reward'], $survey['reward'], $user_id]);
 
+                // Add to transactions
                 $stmt = $pdo->prepare("INSERT INTO transactions (user_id, amount, type, description) VALUES (?, ?, 'earning', ?)");
                 $stmt->execute([$user_id, $survey['reward'], "Completed Premium Survey: " . $survey['title']]);
 
                 $pdo->commit();
+
+                // Send Activity Email
+                $user_data = $userClass->getUserDetails($user_id);
+                if ($user_data) {
+                    require_once 'includes/mail_functions.php';
+                    require_once 'includes/email_templates.php';
+                    $subject = "Task Completed Successfully - " . SITE_NAME;
+                    $message = "Congratulations! You have successfully completed the survey: <strong>" . htmlspecialchars($survey['title']) . "</strong>. A reward of <strong>$" . number_format($survey['reward'], 4) . "</strong> has been added to your balance.";
+                    $body = getEmailTemplate("Earning Notification", $user_data['username'], null, $message, true);
+                    sendMail($user_data['email'], $subject, $body);
+                }
+
                 header("Location: dashboard.php?success=survey_complete");
                 exit();
             } catch (Exception $e) {

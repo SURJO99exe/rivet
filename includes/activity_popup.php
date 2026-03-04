@@ -8,7 +8,7 @@
             <h4 style="font-size: 0.9rem; font-weight: 800; color: #1e293b; margin: 0;">Live Activity</h4>
             <span onclick="hideActivity()" style="cursor: pointer; opacity: 0.4; font-size: 1.1rem; line-height: 1; padding: 0 5px;">&times;</span>
         </div>
-        <p style="font-size: 0.8rem; color: #64748b; margin: 0; line-height: 1.3; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+        <p style="font-size: 0.8rem; color: #64748b; margin: 0; line-height: 1.3;">
             Someone from <strong id="act-country" style="color: #6366f1;">Japan</strong> <span id="act-action">earned</span> <strong id="act-amount" style="color: #10b981;">$0.0500</strong> <span id="act-type">from survey</span>
         </p>
         <p id="activity-time" style="font-size: 0.7rem; color: #94a3b8; margin-top: 3px;">9 sec ago</p>
@@ -21,6 +21,23 @@
             left: 10px !important;
             width: calc(100% - 20px) !important;
             padding: 10px 15px !important;
+        }
+        #activity-popup p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+    }
+    @media (min-width: 481px) {
+        #activity-popup {
+            max-width: 500px !important;
+            width: auto !important;
+            white-space: nowrap !important;
+        }
+        #activity-popup p {
+            white-space: nowrap !important;
+            overflow: visible !important;
+            text-overflow: unset !important;
         }
     }
 </style>

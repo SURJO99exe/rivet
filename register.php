@@ -34,11 +34,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         $registration_result = $auth->register($username, $email, $password, $country, $referred_by_id);
         if ($registration_result === true) {
-            // Auto login after successful registration
-            if ($auth->login($username, $password)) {
-                redirect('user/dashboard.php');
+            // Generate 6-digit OTP
+            $otp = rand(100000, 999999);
+            $expiry = date('Y-m-d H:i:s', strtotime('+15 minutes'));
+            
+            $stmt = $pdo->prepare("UPDATE users SET otp_code = ?, otp_expiry = ? WHERE email = ?");
+            $stmt->execute([$otp, $expiry, $email]);
+
+            // Send OTP Email
+            require_once 'includes/mail_functions.php';
+            require_once 'includes/email_templates.php';
+            $subject = "Verify Your Account - " . SITE_NAME;
+            $message = "Thank you for registering at " . SITE_NAME . ". Please use the following 6-digit code to verify your account:";
+            $body = getEmailTemplate("Account Verification", $username, $otp, $message);
+            
+            if (sendMail($email, $subject, $body)) {
+                $_SESSION['verify_email'] = $email;
+                redirect('verify_otp.php?type=register');
             } else {
-                $success = "Registration successful! You can now login.";
+                $error = "Registration successful, but failed to send verification email. Please try to login to resend.";
             }
         } else {
             $error = is_string($registration_result) ? $registration_result : "Registration failed. Please try again.";

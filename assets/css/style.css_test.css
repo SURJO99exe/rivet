@@ -144,32 +144,10 @@ body.dark .auth-form-side { background-color: var(--bg-dark); }
 .auth-card { width: 100%; max-width: 450px; background: white; padding: 2.5rem; border-radius: 1.5rem; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
 body.dark .auth-card { background: var(--card-bg-dark); }
 
-/* Desktop standard (default) */
+/* Desktop standard (default) (MODIFIED) */
 @media (min-width: 769px) {
     .auth-container {
-        display: flex !important;
-        flex-direction: row !important;
-        min-height: 100vh !important;
-        align-items: stretch !important;
-    }
-    .auth-image-side {
-        flex: 1 !important;
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: center !important;
-        align-items: center !important;
-        padding: 4rem !important;
-    }
-    .auth-form-side {
-        flex: 1 !important;
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-        padding: 4rem !important;
-    }
-    .auth-card {
-        width: 100% !important;
-        max-width: 450px !important;
+        flex-direction: row;
     }
 }
 

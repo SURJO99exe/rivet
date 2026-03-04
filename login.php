@@ -65,7 +65,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <div style="margin-bottom: 1.25rem;">
                         <div style="display: flex; justify-content: space-between;">
                             <label style="font-weight: 600; font-size: 0.9rem;">Password</label>
-                            <a href="#" style="font-size: 0.8rem; color: var(--primary-color); text-decoration: none;">Forgot password?</a>
+                            <a href="forgot_password.php" style="font-size: 0.8rem; color: var(--primary-color); text-decoration: none;">Forgot password?</a>
                         </div>
                         <input type="password" name="password" placeholder="••••••••" required>
                     </div>

@@ -102,7 +102,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['submit_survey'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $survey['title']; ?> - <?php echo SITE_NAME; ?></title>
-    <?php if(SITE_FAVICON): ?>
+    <?php if(defined('SITE_FAVICON') && SITE_FAVICON): ?>
         <link rel="icon" type="image/x-icon" href="../assets/img/<?php echo SITE_FAVICON; ?>">
     <?php endif; ?>
     <link rel="stylesheet" href="../assets/css/style.css">

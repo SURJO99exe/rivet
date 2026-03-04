@@ -1,5 +1,4 @@
-﻿-- Users Table
-CREATE TABLE IF NOT EXISTS users (
+﻿CREATE TABLE IF NOT EXISTS users (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(50) NOT NULL UNIQUE,
     email VARCHAR(100) NOT NULL UNIQUE,
@@ -23,7 +22,6 @@ CREATE TABLE IF NOT EXISTS users (
     FOREIGN KEY (referred_by) REFERENCES users(id) ON DELETE SET NULL
 );
 
--- Memberships Table
 CREATE TABLE IF NOT EXISTS memberships (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(50) NOT NULL,
@@ -35,7 +33,6 @@ CREATE TABLE IF NOT EXISTS memberships (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ads Table
 CREATE TABLE IF NOT EXISTS ads (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -48,7 +45,6 @@ CREATE TABLE IF NOT EXISTS ads (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- User Ads Views Table
 CREATE TABLE IF NOT EXISTS ad_views (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -59,7 +55,6 @@ CREATE TABLE IF NOT EXISTS ad_views (
     FOREIGN KEY (ad_id) REFERENCES ads(id) ON DELETE CASCADE
 );
 
--- Withdrawal Requests Table
 CREATE TABLE IF NOT EXISTS withdrawals (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -72,7 +67,6 @@ CREATE TABLE IF NOT EXISTS withdrawals (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Referral Commissions Table
 CREATE TABLE IF NOT EXISTS referral_commissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -83,13 +77,11 @@ CREATE TABLE IF NOT EXISTS referral_commissions (
     FOREIGN KEY (referred_user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Settings Table
 CREATE TABLE IF NOT EXISTS settings (
     setting_key VARCHAR(50) PRIMARY KEY,
     setting_value TEXT NOT NULL
 );
 
--- Surveys Table
 CREATE TABLE IF NOT EXISTS surveys (
     id INT AUTO_INCREMENT PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
@@ -100,7 +92,6 @@ CREATE TABLE IF NOT EXISTS surveys (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- User Survey Completions
 CREATE TABLE IF NOT EXISTS survey_completions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -111,7 +102,6 @@ CREATE TABLE IF NOT EXISTS survey_completions (
     FOREIGN KEY (survey_id) REFERENCES surveys(id) ON DELETE CASCADE
 );
 
--- Transactions Table
 CREATE TABLE IF NOT EXISTS transactions (
     id INT AUTO_INCREMENT PRIMARY KEY,
     user_id INT NOT NULL,
@@ -122,7 +112,6 @@ CREATE TABLE IF NOT EXISTS transactions (
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 );
 
--- Default Settings
 INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
 ('site_name', 'F Earning Platform'),
 ('min_withdrawal', '10.00'),
@@ -166,15 +155,12 @@ INSERT IGNORE INTO settings (setting_key, setting_value) VALUES
 ('ad_banner_320_50_code', '<script type=\"text/javascript\">atOptions = {\'key\' : \'6a05cc3f871975cbe274867ba7424efa\',\'format\' : \'iframe\',\'height\' : 50,\'width\' : 320,\'params\' : {}};</script><script type=\"text/javascript\" src=\"https://www.highperformanceformat.com/6a05cc3f871975cbe274867ba7424efa/invoke.js\"></script>'),
 ('ad_smartlink_url', 'https://www.effectivegatecpm.com/i5wy2tfi?key=abacd0c278ba5dfee619ea692d4c305f');
 
--- Default Membership Plans
 INSERT IGNORE INTO memberships (id, name, price, daily_ads, daily_surveys, ad_reward, duration_days) VALUES
 (1, 'Free', 0.00, 10, 5, 0.0100, 3650),
 (2, 'Starter', 10.00, 20, 10, 0.0200, 30),
 (3, 'Pro', 50.00, 50, 25, 0.0500, 30),
 (4, 'Ultimate', 100.00, 100, 50, 0.1000, 30);
 
--- Default Admin Account (Password: admin123)
--- Hash for 'admin123': $2y$10$f9FrrPAj293mrhWCrwcq5OmWyDL8s0riQAQsMlK90unyDaPNssSN2
 INSERT INTO users (username, email, password, referral_code, is_admin, status) VALUES
 ('admin', 'admin@f-earning.com', '$2y$10$f9FrrPAj293mrhWCrwcq5OmWyDL8s0riQAQsMlK90unyDaPNssSN2', 'ADMIN_REF', 1, 'active')
 ON DUPLICATE KEY UPDATE password = '$2y$10$f9FrrPAj293mrhWCrwcq5OmWyDL8s0riQAQsMlK90unyDaPNssSN2', is_admin = 1, status = 'active';

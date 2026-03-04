@@ -47,7 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Forgot Password - <?php echo SITE_NAME; ?></title>
     <?php if(defined('SITE_FAVICON') && SITE_FAVICON): ?>
-        <link rel="icon" type="image/x-icon" href="assets/img/<?php echo SITE_FAVICON; ?>">
+        <link rel="icon" type="image/x-icon" href="<?php echo (strpos($_SERVER['PHP_SELF'], '/user/') !== false ? '../' : ''); ?>assets/img/<?php echo SITE_FAVICON; ?>">
     <?php endif; ?>
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
